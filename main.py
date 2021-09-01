@@ -25,7 +25,28 @@ class FancyHeaderPrinter(HeaderPrinter):
 
 
 def print_junk():
-    junk = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+    junk = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+    ]
     print(junk)
     return
 
