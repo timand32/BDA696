@@ -151,3 +151,5 @@ media
 static
 
 # Project related ignores (place project related ignores below here)
+#.isort.cfg decided to appear from the aether, we need to ignore it
+.isort.cfg
