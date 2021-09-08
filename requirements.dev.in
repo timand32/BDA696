@@ -3,6 +3,9 @@ detect-secrets
 flake8
 isort[requirements]
 jupyterlab
+pandas
 pip-tools
+plotly
 pre-commit
 nose
+scikit-learn
