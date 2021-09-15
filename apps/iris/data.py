@@ -7,7 +7,6 @@ import log
 import numpy as np
 import pandas as pd
 
-"Dictionary of feature names."
 feature_dict = {
     0: "sepal_length",
     1: "sepal_width",
@@ -15,8 +14,11 @@ feature_dict = {
     3: "pedal_width",
     4: "class",
 }
+"A dict of feature names."
 
-"Dictionary of desired descriptive stats and their np function."
+continuous_feature_list = [feature_dict[i] for i in range(0, 4)]
+"A list of continuous feature names."
+
 stat_dict = {
     "count": np.count_nonzero,
     "mean": np.mean,
@@ -28,6 +30,7 @@ stat_dict = {
     "q3": lambda x: np.quantile(x, 0.75),
     "q4": lambda x: np.quantile(x, 1.0),
 }
+"A dict of desired descriptive stats and their numpy function."
 
 _mrsharky_data_path = "https://teaching.mrsharky.com/data/iris.data"
 
@@ -49,13 +52,35 @@ def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
     return df
 
 
+def _describe_feature(
+    data_df: pd.DataFrame, desc_df: pd.DataFrame, feature: "str"
+) -> pd.DataFrame:
+    """Appends descriptive stats for a given feature in the Iris dataset.
+
+    Args:
+        data_df (pd.DataFrame): DataFrame of Iris dataset.
+        desc_df (pd.DataFrame): DataFrame of descriptive statistics.
+
+    Returns:
+        pd.DataFrame: The appended description DataFrame.
+    """
+    # Build a list for the new row.
+    row_list = [
+        feature,
+    ]
+    # For each stat defined in this module,
+    # run its associated numpy function.
+    for stat in stat_dict:
+        stat_value = data_df[feature]
+        row_list.append(stat_dict[stat](stat_value))
+    # Turn it into a series and append it to the df.
+    column_names = list("feature") + list(stat_dict)
+    row_srs = pd.Series(row_list, index=column_names)
+    desc_df = desc_df.append(row_srs, ignore_index=True)
+
+
 def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
     """Calculates descriptive stats and returns a pandas DataFrame.
-
-    I chose to do this the 'hard' way:
-    making a table from scratch with numpy calls
-    instead of pandas' describe().
-    Unfortunately code clarity suffered quite a bit.
 
     Args:
         data_df (pd.DataFrame): A pandas DataFrame of the Iris data set.
@@ -64,20 +89,9 @@ def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: Data frame with descriptive stats of each feature.
     """
     desc_df = pd.DataFrame()
-    features = [feature_dict[i] for i in range(0, 4)]
+    features = continuous_feature_list
     for feature in features:
-        # Build a list for the new row.
-        row_list = [
-            feature,
-        ]
-        for stat in stat_dict:
-            stat_value = data_df[feature]
-            row_list.append(stat_dict[stat](stat_value))
-        column_names = [
-            "feature",
-        ] + list(stat_dict)
-        row_srs = pd.Series(row_list, index=column_names)
-        desc_df = desc_df.append(row_srs, ignore_index=True)
+        desc_df = _describe_feature(data_df, desc_df, feature)
     desc_df = desc_df.set_index(["feature"])
     return desc_df
 
