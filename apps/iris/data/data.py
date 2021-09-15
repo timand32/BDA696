@@ -85,21 +85,30 @@ def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
 
 
 def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
-    # Describe for all classes:
-    # For each feature, add each stat as a row.
+    """Calculates descriptive stats and returns a pandas DataFrame.
+
+    Args:
+        data_df (pd.DataFrame): A pandas DataFrame of the Iris data set.
+
+    Returns:
+        pd.DataFrame: Data frame with descriptive stats of each feature.
+    """
     desc_df = pd.DataFrame()
     features = [feature_dict[i] for i in range(0, 4)]
     for feature in features:
+        # Build a list for the new row.
         row_list = [
-            "All Classes",
             feature,
         ]
         for stat in stat_dict:
             stat_value = data_df[feature]
             row_list.append(stat_dict[stat](stat_value))
-        column_names = ["class", "feature"] + list(stat_dict)
+        column_names = [
+            "feature",
+        ] + list(stat_dict)
         row_srs = pd.Series(row_list, index=column_names)
         desc_df = desc_df.append(row_srs, ignore_index=True)
+    desc_df = desc_df.set_index(["feature"])
     return desc_df
 
 
