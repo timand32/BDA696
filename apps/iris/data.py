@@ -65,9 +65,7 @@ def _describe_feature(
         pd.DataFrame: The appended description DataFrame.
     """
     # Build a list for the new row.
-    row_list = [
-        feature,
-    ]
+    row_list = [feature]
     # For each stat defined in this module,
     # run its associated numpy function.
     for stat in stat_dict:
