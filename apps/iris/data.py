@@ -74,9 +74,11 @@ def _describe_feature(
         stat_value = data_df[feature]
         row_list.append(stat_dict[stat](stat_value))
     # Turn it into a series and append it to the df.
-    column_names = list("feature") + list(stat_dict)
+    column_names = ["feature"] + list(stat_dict)
+    print(f"{column_names}\n{row_list}")
     row_srs = pd.Series(row_list, index=column_names)
     desc_df = desc_df.append(row_srs, ignore_index=True)
+    return desc_df
 
 
 def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
