@@ -45,7 +45,9 @@ def create_logger(
 
 
 def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
-    """Loads Iris data set and returns a pandas DataFrame
+    """Loads Iris data set and returns a pandas DataFrame.
+
+    Adds column names to the DataFrame.
 
     Args:
         data_path (str, optional): Path to download a .csv of Iris data.
@@ -54,7 +56,16 @@ def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A pandas DataFrame containing the Iris data set.
     """
-    return pd.read_csv(data_path, header=None)
+    df = pd.read_csv(data_path, header=None)
+    column_names = {
+        0: "sepal_length",
+        1: "sepal_width",
+        2: "pedal_length",
+        3: "pedal_width",
+        4: "class",
+    }
+    df = df.rename(columns=column_names)
+    return df
 
 
 def main() -> int:
