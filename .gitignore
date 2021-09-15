@@ -156,3 +156,5 @@ static
 
 .vscode/extensions.json
 .vscode/settings.json
+
+.log
