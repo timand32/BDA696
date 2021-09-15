@@ -87,6 +87,11 @@ def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
 def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
     """Calculates descriptive stats and returns a pandas DataFrame.
 
+    I chose to do this the 'hard' way:
+    making a table from scratch with numpy calls
+    instead of pandas' describe().
+    Unfortunately code clarity suffered quite a bit.
+
     Args:
         data_df (pd.DataFrame): A pandas DataFrame of the Iris data set.
 
