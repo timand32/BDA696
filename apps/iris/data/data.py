@@ -4,14 +4,29 @@ import logging
 import os
 import sys
 
+import numpy as np
 import pandas as pd
 
+"Dictionary of feature names."
 feature_dict = {
     0: "sepal_length",
     1: "sepal_width",
     2: "pedal_length",
     3: "pedal_width",
     4: "class",
+}
+
+"Dictionary of desired descriptive stats and their np function."
+stat_dict = {
+    "count": np.count_nonzero,
+    "mean": np.mean,
+    "std_dv.": np.std,
+    "min": np.min,
+    "max": np.max,
+    "q1": lambda x: np.quantile(x, 0.25),
+    "q2": lambda x: np.quantile(x, 0.50),
+    "q3": lambda x: np.quantile(x, 0.75),
+    "q4": lambda x: np.quantile(x, 1.0),
 }
 
 _mrsharky_data_path = "https://teaching.mrsharky.com/data/iris.data"
@@ -70,7 +85,22 @@ def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
 
 
 def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    # Describe for all classes:
+    # For each feature, add each stat as a row.
+    desc_df = pd.DataFrame()
+    features = [feature_dict[i] for i in range(0, 4)]
+    for feature in features:
+        row_list = [
+            "All Classes",
+            feature,
+        ]
+        for stat in stat_dict:
+            stat_value = data_df[feature]
+            row_list.append(stat_dict[stat](stat_value))
+        column_names = ["class", "feature"] + list(stat_dict)
+        row_srs = pd.Series(row_list, index=column_names)
+        desc_df = desc_df.append(row_srs, ignore_index=True)
+    return desc_df
 
 
 def main() -> int:
