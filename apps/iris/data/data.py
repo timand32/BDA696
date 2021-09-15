@@ -6,6 +6,14 @@ import sys
 
 import pandas as pd
 
+feature_dict = {
+    0: "sepal_length",
+    1: "sepal_width",
+    2: "pedal_length",
+    3: "pedal_width",
+    4: "class",
+}
+
 _mrsharky_data_path = "https://teaching.mrsharky.com/data/iris.data"
 
 
@@ -57,14 +65,7 @@ def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
         pd.DataFrame: A pandas DataFrame containing the Iris data set.
     """
     df = pd.read_csv(data_path, header=None)
-    column_names = {
-        0: "sepal_length",
-        1: "sepal_width",
-        2: "pedal_length",
-        3: "pedal_width",
-        4: "class",
-    }
-    df = df.rename(columns=column_names)
+    df = df.rename(columns=feature_dict)
     return df
 
 
