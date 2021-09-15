@@ -68,15 +68,21 @@ def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
     return df
 
 
+def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
+    pass
+
+
 def main() -> int:
     # Setup logger with a helper function
     logger = create_logger(
         log_name="iris.data", log_level=logging.DEBUG, use_file_handler=True
     )
     logger.info("Loading Iris data set.")
-    df = load_data()
-    print(df)
+    data_df = load_data()
+    print(data_df)
     logger.info("Describing Iris data set.")
+    desc_df = describe_data(data_df=data_df)
+    print(desc_df)
     return 0
 
 
