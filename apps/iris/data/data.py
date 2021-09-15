@@ -48,7 +48,7 @@ def create_logger(
         Defaults to False.
 
     Returns:
-        logging.Logger: [description]
+        logging.Logger: A configured Python Logger object.
 
     Todo:
         Put this in its own module, eventually in shared library between apps.
