@@ -4,6 +4,10 @@ import logging
 import os
 import sys
 
+import pandas as pd
+
+_mrsharky_data_path = "https://teaching.mrsharky.com/data/iris.data"
+
 
 def create_logger(
     log_name: str = __name__,
@@ -40,13 +44,27 @@ def create_logger(
     return logger
 
 
+def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
+    """Loads Iris data set and returns a pandas DataFrame
+
+    Args:
+        data_path (str, optional): Path to download a .csv of Iris data.
+        Defaults to "https://teaching.mrsharky.com/data/iris.data".
+
+    Returns:
+        pd.DataFrame: A pandas DataFrame containing the Iris data set.
+    """
+    return pd.read_csv(data_path, header=None)
+
+
 def main() -> int:
     # Setup logger with a helper function
     logger = create_logger(
         log_name="iris.data", log_level=logging.DEBUG, use_file_handler=True
     )
     logger.info("Loading Iris data set.")
-    logger.info("Loading Iris metadata.")
+    df = load_data()
+    print(df)
     logger.info("Describing Iris data set.")
     return 0
 
