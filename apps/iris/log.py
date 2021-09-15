@@ -23,8 +23,6 @@ def create_logger(
     Returns:
         logging.Logger: A configured Python Logger object.
 
-    Todo:
-        Put this in its own module, eventually in shared library between apps.
     """
     logger = logging.getLogger(name=__name__)
     logger.setLevel(level=log_level)
