@@ -7,6 +7,10 @@ import log
 import numpy as np
 import pandas as pd
 
+iris_web_path = "https://teaching.mrsharky.com/data/iris.data"
+"Path to a .csv of the Iris data set on the web."
+
+
 feature_dict = {
     0: "sepal_length",
     1: "sepal_width",
@@ -32,10 +36,8 @@ stat_dict = {
 }
 "A dict of desired descriptive stats and their numpy function."
 
-_mrsharky_data_path = "https://teaching.mrsharky.com/data/iris.data"
 
-
-def load_data(data_path=_mrsharky_data_path) -> pd.DataFrame:
+def load_data(data_path=iris_web_path) -> pd.DataFrame:
     """Loads Iris data set and returns a pandas DataFrame.
 
     Adds column names to the DataFrame.
