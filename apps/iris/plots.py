@@ -41,9 +41,66 @@ def _generate_scatterplot(iris_df: pd.DataFrame) -> go.Figure:
     return figure
 
 
+vsub_titles = ["Sepal Width", "Sepal Length", "Pedal Width", "Pedal Length"]
+
+
+def _generate_violinplots(iris_df: pd.DataFrame) -> go.Figure:
+    figure = psp.make_subplots(
+        rows=2,
+        cols=2,
+        subplot_titles=vsub_titles,
+    )
+    plots = []
+    plots.append(
+        px.violin(
+            data_frame=iris_df,
+            x="sepal_width",
+            color="class",
+        )
+    )
+    plots.append(
+        px.violin(
+            data_frame=iris_df,
+            x="sepal_length",
+            color="class",
+        )
+    )
+    plots.append(
+        px.violin(
+            data_frame=iris_df,
+            x="pedal_width",
+            color="class",
+        )
+    )
+    plots.append(
+        px.violin(
+            data_frame=iris_df,
+            x="pedal_length",
+            color="class",
+        )
+    )
+    print(plots)
+    # Stack exchange question 60633891 really helped here.
+    coordinates = [(1, 1), (1, 2), (2, 1), (2, 2)]
+    for (i, plot) in enumerate(plots):
+        coord = coordinates[i]
+        for trace in plot.data:
+            figure.add_trace(trace, coord[0], coord[1])
+
+    # Stack exchange 58849925 helped here understanding editing Figures.
+    figure.layout["yaxis"]["title"] = "sepal width"
+    figure.layout["yaxis2"]["title"] = "sepal length"
+    figure.layout["yaxis3"]["title"] = "pedal width"
+    figure.layout["yaxis4"]["title"] = "pedal length"
+    figure.layout["title"] = "Violin Plots of Iris Features"
+
+    return figure
+
+
 def generate_plots(iris_df: pd.DataFrame) -> list():
     plots = list()
     plots.append(_generate_scatterplot(iris_df=iris_df))
+    plots.append(_generate_violinplots(iris_df=iris_df))
     return plots
 
 
