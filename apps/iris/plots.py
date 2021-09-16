@@ -32,10 +32,10 @@ def _generate_scatterplot(iris_df: pd.DataFrame) -> go.Figure:
         figure.add_trace(trace, 1, 2)
 
     # Stack exchange 58849925 helped here understanding editing Figures.
-    figure.layout["xaxis"]["title"] = "sepal width"
-    figure.layout["yaxis"]["title"] = "sepal length"
-    figure.layout["xaxis2"]["title"] = "pedal width"
-    figure.layout["yaxis2"]["title"] = "pedal length"
+    figure.layout["xaxis"]["title"] = "sepal width (cm)"
+    figure.layout["yaxis"]["title"] = "sepal length (cm)"
+    figure.layout["xaxis2"]["title"] = "pedal width (cm)"
+    figure.layout["yaxis2"]["title"] = "pedal length (cm)"
     figure.layout["title"] = "Scatterplots of Iris Features"
 
     return figure
@@ -92,6 +92,10 @@ def _generate_violinplots(iris_df: pd.DataFrame) -> go.Figure:
     figure.layout["yaxis2"]["title"] = "sepal length"
     figure.layout["yaxis3"]["title"] = "pedal width"
     figure.layout["yaxis4"]["title"] = "pedal length"
+    figure.layout["xaxis"]["title"] = "(cm)"
+    figure.layout["xaxis2"]["title"] = "(cm)"
+    figure.layout["xaxis3"]["title"] = "(cm)"
+    figure.layout["xaxis4"]["title"] = "(cm)"
     figure.layout["title"] = "Violin Plots of Iris Features"
 
     return figure
