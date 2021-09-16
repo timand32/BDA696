@@ -52,7 +52,7 @@ def load_data(data_path=iris_web_path) -> pd.DataFrame:
 
 
 def _describe_feature(
-    data_df: pd.DataFrame, desc_df: pd.DataFrame, feature: "str"
+    data_df: pd.DataFrame, desc_df: pd.DataFrame, feature: str
 ) -> pd.DataFrame:
     """Appends descriptive stats for a given feature in the Iris dataset.
 
