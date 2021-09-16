@@ -30,7 +30,6 @@ stat_dict = {
     "q1": lambda x: np.quantile(x, 0.25),
     "q2": lambda x: np.quantile(x, 0.50),
     "q3": lambda x: np.quantile(x, 0.75),
-    "q4": lambda x: np.quantile(x, 1.0),
 }
 "A dict of desired descriptive stats and their numpy function."
 
