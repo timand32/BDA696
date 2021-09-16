@@ -79,7 +79,6 @@ def _generate_violinplots(iris_df: pd.DataFrame) -> go.Figure:
             color="class",
         )
     )
-    print(plots)
     # Stack exchange question 60633891 really helped here.
     coordinates = [(1, 1), (1, 2), (2, 1), (2, 2)]
     for (i, plot) in enumerate(plots):
@@ -139,7 +138,6 @@ def _generate_boxplots(iris_df: pd.DataFrame) -> go.Figure:
             color="class",
         )
     )
-    print(plots)
     # Stack exchange question 60633891 really helped here.
     coordinates = [(1, 1), (1, 2), (2, 1), (2, 2)]
     for (i, plot) in enumerate(plots):

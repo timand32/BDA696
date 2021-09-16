@@ -19,19 +19,19 @@ feature_dict = {
 "A dict of feature names."
 
 continuous_feature_list = [feature_dict[i] for i in range(0, 4)]
-"A list of continuous feature names."
+"A list of continuous feature names (can't get stats for 'class')."
 
 stat_dict = {
     "count": np.count_nonzero,
     "mean": np.mean,
-    "std_dv.": np.std,
+    "std_dv": np.std,
     "min": np.min,
     "max": np.max,
     "q1": lambda x: np.quantile(x, 0.25),
     "q2": lambda x: np.quantile(x, 0.50),
     "q3": lambda x: np.quantile(x, 0.75),
 }
-"A dict of desired descriptive stats and their numpy function."
+"A dict of supported descriptive stats and their numpy function."
 
 
 def load_data(data_path=iris_web_path) -> pd.DataFrame:
