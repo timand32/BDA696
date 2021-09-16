@@ -12,8 +12,8 @@ iris_web_path = "https://teaching.mrsharky.com/data/iris.data"
 feature_dict = {
     0: "sepal_length",
     1: "sepal_width",
-    2: "pedal_length",
-    3: "pedal_width",
+    2: "petal_length",
+    3: "petal_width",
     4: "class",
 }
 "A dict of feature names."
