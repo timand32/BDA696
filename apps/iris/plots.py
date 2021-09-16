@@ -41,14 +41,14 @@ def _generate_scatterplot(iris_df: pd.DataFrame) -> go.Figure:
     return figure
 
 
-vsub_titles = ["Sepal Width", "Sepal Length", "Pedal Width", "Pedal Length"]
+_vsub_titles = ["Sepal Width", "Sepal Length", "Pedal Width", "Pedal Length"]
 
 
 def _generate_violinplots(iris_df: pd.DataFrame) -> go.Figure:
     figure = psp.make_subplots(
         rows=2,
         cols=2,
-        subplot_titles=vsub_titles,
+        subplot_titles=_vsub_titles,
     )
     plots = []
     plots.append(
@@ -92,11 +92,71 @@ def _generate_violinplots(iris_df: pd.DataFrame) -> go.Figure:
     figure.layout["yaxis2"]["title"] = "sepal length"
     figure.layout["yaxis3"]["title"] = "pedal width"
     figure.layout["yaxis4"]["title"] = "pedal length"
-    figure.layout["xaxis"]["title"] = "(cm)"
-    figure.layout["xaxis2"]["title"] = "(cm)"
-    figure.layout["xaxis3"]["title"] = "(cm)"
-    figure.layout["xaxis4"]["title"] = "(cm)"
     figure.layout["title"] = "Violin Plots of Iris Features"
+
+    return figure
+
+
+_bsub_titles = ["Sepal Width", "Sepal Length", "Pedal Width", "Pedal Length"]
+
+
+def _generate_boxplots(iris_df: pd.DataFrame) -> go.Figure:
+    figure = psp.make_subplots(
+        rows=2,
+        cols=2,
+        subplot_titles=_bsub_titles,
+    )
+    plots = []
+    plots.append(
+        px.box(
+            data_frame=iris_df,
+            y="sepal_width",
+            x="class",
+            color="class",
+        )
+    )
+    plots.append(
+        px.box(
+            data_frame=iris_df,
+            y="sepal_length",
+            x="class",
+            color="class",
+        )
+    )
+    plots.append(
+        px.box(
+            data_frame=iris_df,
+            y="pedal_width",
+            x="class",
+            color="class",
+        )
+    )
+    plots.append(
+        px.box(
+            data_frame=iris_df,
+            y="pedal_length",
+            x="class",
+            color="class",
+        )
+    )
+    print(plots)
+    # Stack exchange question 60633891 really helped here.
+    coordinates = [(1, 1), (1, 2), (2, 1), (2, 2)]
+    for (i, plot) in enumerate(plots):
+        coord = coordinates[i]
+        for trace in plot.data:
+            figure.add_trace(trace, coord[0], coord[1])
+
+    # Stack exchange 58849925 helped here understanding editing Figures.
+    figure.layout["yaxis"]["title"] = "sepal width (cm)"
+    figure.layout["yaxis2"]["title"] = "sepal length (cm)"
+    figure.layout["yaxis3"]["title"] = "pedal width (cm)"
+    figure.layout["yaxis4"]["title"] = "pedal length (cm)"
+    figure.layout["xaxis"]["title"] = "class"
+    figure.layout["xaxis2"]["title"] = "class"
+    figure.layout["xaxis3"]["title"] = "class"
+    figure.layout["xaxis4"]["title"] = "class"
+    figure.layout["title"] = "Box Plots of Iris Features"
 
     return figure
 
@@ -105,6 +165,7 @@ def generate_plots(iris_df: pd.DataFrame) -> list():
     plots = list()
     plots.append(_generate_scatterplot(iris_df=iris_df))
     plots.append(_generate_violinplots(iris_df=iris_df))
+    plots.append(_generate_boxplots(iris_df=iris_df))
     return plots
 
 
