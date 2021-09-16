@@ -1,9 +1,7 @@
 """Module for loading and describing the Iris data set from the web.
 """
-import logging
 import sys
 
-import log
 import numpy as np
 import pandas as pd
 
@@ -98,14 +96,8 @@ def describe_data(data_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> int:
-    # Setup logger with a helper function
-    logger = log.create_logger(
-        log_name="iris.data", log_level=logging.DEBUG, use_file_handler=True
-    )
-    logger.info("Loading Iris data set.")
     data_df = load_data()
     print(data_df)
-    logger.info("Describing Iris data set.")
     desc_df = describe_data(data_df=data_df)
     print(desc_df)
     return 0
