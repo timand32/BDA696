@@ -32,10 +32,11 @@ def _generate_scatterplot(iris_df: pd.DataFrame) -> go.Figure:
         figure.add_trace(trace, 1, 2)
 
     # Stack exchange 58849925 helped here understanding editing Figures.
-    figure.layout["xaxis"]["title"] = "Sepal Width"
-    figure.layout["yaxis"]["title"] = "Sepal Length"
-    figure.layout["xaxis2"]["title"] = "Pedal Width"
-    figure.layout["yaxis2"]["title"] = "Pedal Length"
+    figure.layout["xaxis"]["title"] = "sepal width"
+    figure.layout["yaxis"]["title"] = "sepal length"
+    figure.layout["xaxis2"]["title"] = "pedal width"
+    figure.layout["yaxis2"]["title"] = "pedal length"
+    figure.layout["title"] = "Scatterplots of Iris Features"
 
     return figure
 
