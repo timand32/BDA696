@@ -22,13 +22,19 @@ def _generate_scatterplot(iris_df: pd.DataFrame) -> go.Figure:
         color="class",
     )
     petal_plot = px.scatter(
-        data_frame=iris_df, x="petal_width", y="petal_length", color="class"
+        data_frame=iris_df,
+        x="petal_width",
+        y="petal_length",
+        color="class",
     )
 
     # Stack exchange question 60633891 really helped here.
     for trace in sepal_plot.data:
         figure.add_trace(trace, 1, 1)
     for trace in petal_plot.data:
+        # As per my code buddy Amy's suggestion
+        # Based on the way I did this, each trace needs this to be False
+        trace.showlegend = False
         figure.add_trace(trace, 1, 2)
 
     # Stack exchange 58849925 helped here understanding editing Figures.
@@ -84,6 +90,9 @@ def _generate_violinplots(iris_df: pd.DataFrame) -> go.Figure:
     for (i, plot) in enumerate(plots):
         coord = coordinates[i]
         for trace in plot.data:
+            # Don't add legends if it's not first plot
+            if i != 0:
+                trace.showlegend = False
             figure.add_trace(trace, coord[0], coord[1])
 
     # Stack exchange 58849925 helped here understanding editing Figures.
@@ -143,6 +152,9 @@ def _generate_boxplots(iris_df: pd.DataFrame) -> go.Figure:
     for (i, plot) in enumerate(plots):
         coord = coordinates[i]
         for trace in plot.data:
+            # Don't add legends if it's not first plot
+            if i != 0:
+                trace.showlegend = False
             figure.add_trace(trace, coord[0], coord[1])
 
     # Stack exchange 58849925 helped here understanding editing Figures.
@@ -199,6 +211,9 @@ def _generate_histograms(iris_df: pd.DataFrame) -> go.Figure:
     for (i, plot) in enumerate(plots):
         coord = coordinates[i]
         for trace in plot.data:
+            # Don't add legends if it's not first plot
+            if i != 0:
+                trace.showlegend = False
             figure.add_trace(trace, coord[0], coord[1])
 
     # Stack exchange 58849925 helped here understanding editing Figures.
