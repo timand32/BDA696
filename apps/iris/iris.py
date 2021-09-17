@@ -18,7 +18,7 @@ def main() -> int:
         plot.show(validate=False)
     pipelines = models.build_pipelines()
     pipelines = models.train_pipelines(iris_df, pipelines)
-    models.analyze_pipelines(pipelines)
+    models.analyze_pipelines(iris_df, pipelines)
     return 0
 
 
