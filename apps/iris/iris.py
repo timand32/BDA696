@@ -4,6 +4,7 @@
 import sys
 
 import data
+import models
 import plots
 
 
@@ -15,7 +16,9 @@ def main() -> int:
     iris_plots = plots.generate_plots(iris_df)
     for plot in iris_plots:
         plot.show(validate=False)
-    # Build and score pipelines
+    pipelines = models.build_pipelines()
+    pipelines = models.train_pipelines(iris_df, pipelines)
+    models.analyze_pipelines(pipelines)
     return 0
 
 
