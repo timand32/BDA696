@@ -4,6 +4,7 @@
 import sys
 
 import data
+import numpy as np
 import pandas as pd
 import sklearn.ensemble as sklensemble
 from sklearn.pipeline import Pipeline
@@ -73,7 +74,7 @@ def analyze_pipelines(iris_df: pd.DataFrame, pipelines: list) -> None:
         predictions = pipeline.predict(x_matrix)
         probabilities = pipeline.predict_proba(x_matrix)
         for i, _ in enumerate(predictions):
-            print(f"{i}:{predictions[i]},{probabilities[i]}")
+            print(f"{i:03}:{predictions[i]:16},{np.round(probabilities[i],3)}")
         score = pipeline.score(x_matrix, y_list)
         print(f"Estimator score: {score}")
 
