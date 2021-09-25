@@ -12,8 +12,8 @@ CREATE TABLE player_game_stats AS
 		bc.atBat, 
 		bc.Hit
 	FROM batter_counts bc
-	WHERE bc.atBat > 0
 	JOIN game g ON bc.game_id=g.game_id
+	WHERE bc.atBat > 0
 ;
 
 
