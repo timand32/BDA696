@@ -84,6 +84,6 @@ DROP TABLE IF EXISTS player_rolling_ba;
 CREATE TABLE player_rolling_ba AS
 	SELECT pgs.batter, pgs.game_id, prbd.ba
 	FROM player_game_stats pgs
-	JOIN player_rolling_ba_dates prbd ON DATE(pgs.local_date)=prbd.local_date
+	JOIN player_rolling_ba_dates prbd ON pgs.local_date=prbd.local_date
 	
 ;
