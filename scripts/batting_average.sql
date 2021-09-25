@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS player_historic_ba;
 CREATE TABLE player_historic_ba AS
 	SELECT batter, SUM(Hit)/SUM(atBat) AS ba
 	FROM batter_counts
+	WHERE atBat > 0
 	GROUP BY batter
 ;
 
@@ -52,7 +53,7 @@ CREATE TABLE player_annual_ba AS
 DROP VIEW IF EXISTS player_rolling_date_stats;
 # Stack Overflow 508791 came in clutch with date_sub()
 # This is also where I use the join-on-own-table hint
-CREATE VIEW player_rolling_date_stats AS
+CREATE TABLE player_rolling_date_stats AS
 	SELECT 
 		pds1.batter, 
 		pds1.local_date, 
@@ -70,7 +71,7 @@ CREATE VIEW player_rolling_date_stats AS
 # Since we have the stats from the prior 100 days for each date,
 DROP VIEW IF EXISTS player_rolling_ba_dates;
 
-CREATE VIEW player_rolling_ba_dates AS
+CREATE TABLE player_rolling_ba_dates AS
 	SELECT batter, local_date, SUM(Hit)/SUM(atBat) AS ba
 	FROM player_rolling_date_stats
 	GROUP BY batter, local_date;
