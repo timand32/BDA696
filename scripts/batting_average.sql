@@ -69,7 +69,7 @@ CREATE TABLE player_rolling_date_stats AS
 
 # Calculate rolling for each date
 # Since we have the stats from the prior 100 days for each date,
-DROP VIEW IF EXISTS player_rolling_ba_dates;
+DROP TABLE IF EXISTS player_rolling_ba_dates;
 
 CREATE TABLE player_rolling_ba_dates AS
 	SELECT batter, local_date, SUM(Hit)/SUM(atBat) AS ba
@@ -79,9 +79,9 @@ CREATE TABLE player_rolling_ba_dates AS
 
 
 # Now join back to each game
-DROP VIEW IF EXISTS player_rolling_ba;
+DROP TABLE IF EXISTS player_rolling_ba;
 
-CREATE VIEW player_rolling_ba AS
+CREATE TABLE player_rolling_ba AS
 	SELECT pgs.batter, pgs.game_id, prbd.ba
 	FROM player_game_stats pgs
 	JOIN player_rolling_ba_dates prbd ON DATE(pgs.local_date)=prbd.local_date
