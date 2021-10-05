@@ -1,4 +1,5 @@
 black
+cufflinks
 detect-secrets
 flake8
 isort[requirements]
