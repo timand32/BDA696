@@ -31,6 +31,15 @@ def _read_table(spark: SparkSession, table_name: str) -> DataFrame:
 
 
 def load_master_df(spark: SparkSession) -> DataFrame:
+    """Load 'master' df of stats per batter per game.
+
+    Args:
+        spark (SparkSession): A spark jdbf session.
+        Should be on a database of the baseball dataframe.
+
+    Returns:
+        DataFrame: A spark dataframe of stats.
+    """
     # Emulate the 'master' table from the SQL example
     # using DataFrame methods.
     # Read batter_counts table from active MariaDB database.

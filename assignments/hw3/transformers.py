@@ -8,6 +8,11 @@ from pyspark.sql import SparkSession
 
 
 class RollingBATransform(Transformer):
+    """A pyspark Transformer for calculating rolling BA averages.
+
+    Takes no additional parameters.
+    """
+
     @keyword_only
     def __init__(self):
         super(RollingBATransform, self).__init__()
@@ -20,7 +25,7 @@ class RollingBATransform(Transformer):
         return self._set(**kwargs)
 
     def _transform(self, dataset):
-        # Stack exchange Q# 56190852:
+        # Stack overflow Q# 56190852:
         # I can grab the active spark session here
         spark = SparkSession.builder.getOrCreate()
         dataset = calc.calculate_ba(spark, dataset)

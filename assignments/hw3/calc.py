@@ -26,6 +26,17 @@ SORT BY m1.batter, m1.game_id, m1.local_date;
 
 
 def calculate_ba(spark: SparkSession, mstr_df: DataFrame) -> DataFrame:
+    """Calculates 100-day rolling batting average
+    from a master list of stats per batter per game.
+
+    Args:
+        spark (SparkSession): A spark jdbf session.
+        mstr_df (DataFrame): A DataFrame of stats
+        per batter per game.
+
+    Returns:
+        DataFrame: A DataFrame of rolling BA per game.
+    """
     # Emulate the rolling 100 days table.
     # since we have one table now, try out Spark SQL.
     # https://spark.apache.org/docs/2.2.0/sql-programming-guide.html
