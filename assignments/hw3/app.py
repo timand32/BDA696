@@ -8,7 +8,7 @@ from transformers import RollingBATransform
 
 
 def main() -> int:
-    # Builda a Spark session
+    # Build a Spark session
     spark = SparkSession.builder.master("local[*]").getOrCreate()
     # Load and process a 'master' DF of stats per batter per game
     mstr_df = data.load_master_df(spark)

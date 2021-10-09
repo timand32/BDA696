@@ -7,7 +7,9 @@ from pyspark.sql import DataFrame, SparkSession
 JDBC_NAME = "mysql"
 """Perhaps this was suppose to be 'mariadb',
 but I got an error whenever I used .show()
-(Same problem as Stack Exchange Q. 56019251)
+(Same problem as Stack Overflow Q. 56019251)
+
+Either way, it still works with a mariadb connection.
 """
 
 DB_SERVER_URL = "localhost:3306"

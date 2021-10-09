@@ -2,8 +2,6 @@
     from a 'master' list of stats per game.
 """
 
-import sys
-
 from pyspark import StorageLevel
 from pyspark.sql import DataFrame, SparkSession
 
@@ -22,6 +20,12 @@ JOIN master m2
         AND m1.local_date
 GROUP BY m1.batter, m1.game_id, m1.local_date
 SORT BY m1.batter, m1.game_id, m1.local_date;
+"""
+"""Query calculates rolling SQL average
+given a master list of hits and at bats
+per batter, per game/date.
+
+Adapted from professor's mysql (@dafrenchyman's) example.
 """
 
 
@@ -44,11 +48,3 @@ def calculate_ba(spark: SparkSession, mstr_df: DataFrame) -> DataFrame:
     mstr_df.persist(StorageLevel.DISK_ONLY)
     rlng_df = spark.sql(ROLLING_SQL)
     return rlng_df
-
-
-def main() -> int:
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
