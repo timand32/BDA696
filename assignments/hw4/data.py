@@ -9,7 +9,7 @@ import seaborn
 
 mpg = seaborn.load_dataset(name="mpg")
 tips = seaborn.load_dataset(name="tips")
-titanic = seaborn.load_dataset(name="titanic").dropna()
+titanic = seaborn.load_dataset(name="titanic")
 
 test_cases = [
     (
@@ -21,7 +21,6 @@ test_cases = [
             "weight",
             "acceleration",
             "origin",
-            "name",
         ],
         "mpg",
     ),
@@ -51,6 +50,8 @@ test_cases = [
     ),
 ]
 """Test cases for feature score application.
+
+(df, predictors, response)
 """
 
 
