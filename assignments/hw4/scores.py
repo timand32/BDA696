@@ -4,6 +4,7 @@
 import sys
 
 import data
+import diffs
 import features
 import numpy as np
 import pandas as pd
@@ -45,7 +46,40 @@ def score_logistic_regression(
     }
 
 
+def score_sum_diff_with_mean(
+    df: pd.Series,
+    predictor: list[str],
+    response: str,
+) -> dict[str, float]:
+    scores_dict = dict()
+    diff_df = diffs.calc_diff_with_mean_table(df, predictor, response)
+    count = diff_df["BinMean"].count()
+    scale = 1.0 / float(count)
+    scores_dict["mean_sq_diff_sum"] = scale * diff_df["MeanSquaredDiff"].sum()
+    scores_dict["weighted_mean_sq_diff_sum"] = (
+        scale * diff_df["WeightedMeanSquaredDiff"].sum()
+    )
+    return scores_dict
+
+
+def score_proportional_diff_with_mean(
+    df: pd.Series,
+    predictor: list[str],
+    response: str,
+) -> dict[str, float]:
+    scores_dict = dict()
+    diff_df = diffs.calc_proportional_diff(df, predictor, response)
+    count = diff_df["Proportion"].count()
+    scale = 1.0 / float(count)
+    scores_dict["mean_sq_diff_sum"] = scale * diff_df["MeanSquaredDiff"].sum()
+    scores_dict["weighted_mean_sq_diff_sum"] = (
+        scale * diff_df["WeightedMeanSquaredDiff"].sum()
+    )
+    return scores_dict
+
+
 def score_single_predictor(
+    df: pd.DataFrame,
     predictor: pd.Series,
     response: pd.Series,
 ) -> dict[str, float]:
@@ -54,11 +88,32 @@ def score_single_predictor(
     rtype = features.determine_response_type(response)
     if ptype == FeatureType.CONTINUOUS:
         if rtype == FeatureType.CONTINUOUS:
+            diff_dict = score_sum_diff_with_mean(
+                df,
+                predictor.name,
+                response.name,
+            )
+            scores_dict = {**scores_dict, **diff_dict}
             linr_dict = score_linear_regression(predictor, response)
             scores_dict = {**scores_dict, **linr_dict}
         if rtype == FeatureType.BOOLEAN:
             logr_dict = score_logistic_regression(predictor, response)
             scores_dict = {**scores_dict, **logr_dict}
+    if ptype == FeatureType.CATEGORICAL:
+        if rtype == FeatureType.CONTINUOUS:
+            diff_dict = score_sum_diff_with_mean(
+                df,
+                predictor.name,
+                response.name,
+            )
+            scores_dict = {**scores_dict, **diff_dict}
+        if rtype == FeatureType.BOOLEAN:
+            diff_dict = score_proportional_diff_with_mean(
+                df,
+                predictor.name,
+                response.name,
+            )
+            scores_dict = {**scores_dict, **diff_dict}
     return scores_dict
 
 
@@ -101,7 +156,7 @@ def score_dataframe(
     rs = df[response]
     for predictor in predictors:
         ps = df[predictor]
-        new_score_dict = score_single_predictor(ps, rs)
+        new_score_dict = score_single_predictor(df, ps, rs)
         scores_dict[predictor] = new_score_dict
     # Black wouldn't let me skip lines with \,
     # but flake8 instisted lines couln't be past 80...

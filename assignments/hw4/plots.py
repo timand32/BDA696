@@ -183,8 +183,9 @@ def save_plots(
 
 
 def main() -> int:
+    scores = None
     for df, _, response in data.test_cases:
-        fig_dict = plot_dataset(df, response)
+        fig_dict = plot_dataset(df, scores, response)
         save_plots(fig_dict)
     return 0
 
