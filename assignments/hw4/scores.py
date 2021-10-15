@@ -95,10 +95,18 @@ def score_single_predictor(
             )
             scores_dict = {**scores_dict, **diff_dict}
             linr_dict = score_linear_regression(predictor, response)
-            scores_dict = {**scores_dict, **linr_dict}
+            scores_dict = {
+                **{"type": "continuous"},
+                **scores_dict,
+                **linr_dict,
+            }
         if rtype == FeatureType.BOOLEAN:
             logr_dict = score_logistic_regression(predictor, response)
-            scores_dict = {**scores_dict, **logr_dict}
+            scores_dict = {
+                **{"type": "continuous"},
+                **scores_dict,
+                **logr_dict,
+            }
     if ptype == FeatureType.CATEGORICAL:
         if rtype == FeatureType.CONTINUOUS:
             diff_dict = score_sum_diff_with_mean(
@@ -106,14 +114,22 @@ def score_single_predictor(
                 predictor.name,
                 response.name,
             )
-            scores_dict = {**scores_dict, **diff_dict}
+            scores_dict = {
+                **{"type": "categorical"},
+                **scores_dict,
+                **diff_dict,
+            }
         if rtype == FeatureType.BOOLEAN:
             diff_dict = score_proportional_diff_with_mean(
                 df,
                 predictor.name,
                 response.name,
             )
-            scores_dict = {**scores_dict, **diff_dict}
+            scores_dict = {
+                **{"type": "categorical"},
+                **scores_dict,
+                **diff_dict,
+            }
     return scores_dict
 
 
