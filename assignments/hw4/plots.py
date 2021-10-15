@@ -139,17 +139,35 @@ def plot_predictor(predictor: pd.Series, response: pd.Series) -> list[Figure]:
         )
 
 
-def plot_dataset(
+def plot_scores(
     df: pd.DataFrame,
+    scores: dict[tuple[str:float]],
     response: str,
     predictors: list[str] = None,
 ) -> dict[list[Figure]]:
     fig_dict = dict()
+    # Default to everything if predictors is None
+    if predictors is None:
+        predictors = df.columns
+        predictors = predictors.drop(response)
+    return fig_dict
+
+
+def plot_dataset(
+    df: pd.DataFrame,
+    scores: dict[str, dict[str, object]],
+    response: str,
+    predictors: list[str] = None,
+) -> dict[list[Figure]]:
+    fig_dict = dict()
+    # Default to everything if predictors is None
     if predictors is None:
         predictors = df.columns
         predictors = predictors.drop(response)
     for p in predictors:
         fig_dict[p] = plot_predictor(df[p], df[response])
+    scores_fig_dict = plot_scores(df, scores, response, predictors)
+    fig_dict = {**fig_dict, **scores_fig_dict}
     return fig_dict
 
 

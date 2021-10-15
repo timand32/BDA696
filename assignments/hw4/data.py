@@ -7,9 +7,9 @@ import sys
 
 import seaborn
 
-mpg = seaborn.load_dataset(name="mpg")
-tips = seaborn.load_dataset(name="tips")
-titanic = seaborn.load_dataset(name="titanic")
+mpg = seaborn.load_dataset(name="mpg").dropna()
+tips = seaborn.load_dataset(name="tips").dropna()
+titanic = seaborn.load_dataset(name="titanic").dropna()
 
 test_cases = [
     (
