@@ -8,7 +8,7 @@ import pandas as pd
 import scores
 
 
-def rank_scores(score_dict: dict[dict[str, float]]) -> dict[pd.DataFrame]:
+def rank_scores(score_dict: dict[dict[str, float]]) -> pd.DataFrame:
     sdf = pd.DataFrame()
     # Get scores into a table
     for key in score_dict:
