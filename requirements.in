@@ -4,4 +4,6 @@ plotly
 pyspark
 pyspark-stubs
 scikit-learn
+seaborn
 sqlalchemy
+statsmodels

@@ -158,3 +158,5 @@ static
 .vscode/settings.json
 
 .log
+
+output/*
