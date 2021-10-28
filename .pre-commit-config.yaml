@@ -9,9 +9,10 @@ repos:
     hooks:
       - id: seed-isort-config
   - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21
+    rev: 5.5.4
     hooks:
       - id: isort
+        args: ["--profile", "black"]
   - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
     rev: v1.2.1
     hooks:

@@ -1,12 +1,10 @@
 import itertools
-import random
-import sys
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import pandas
 
 
-def _determine_response_type(y: pandas.Series) -> str:
+def determine_response_type(y: pandas.Series) -> str:
     """"""
     if len(y.unique()) == 2:
         return "boolean"
@@ -14,7 +12,7 @@ def _determine_response_type(y: pandas.Series) -> str:
         return "continuous"
 
 
-def _determine_predictor_type(
+def determine_predictor_type(
     x: pandas.Series,
     categorical_threshold: float = 0.05,
 ) -> str:
@@ -61,25 +59,26 @@ class Dataset(object):
                 Heuristic is (unique values in X)/(size of X) < threshold.
                 Defaults to 0.05.
         """
+        self.__title = title
         self.__y: pandas.Series = df[response_column]
-        self.__y_type: str = _determine_response_type(self.__y)
+        self.__y_type: str = determine_response_type(self.__y)
         self.__X: pandas.DataFrame = df[predictor_columns]
         categorical_columns = [
             x.name
             for _, x in self.__X.items()
-            if _determine_predictor_type(
+            if determine_predictor_type(
                 x,
                 categorical_threshold,
             )
             == "categorical"
         ]
-        self.__categorical_X = self.__X[categorical_columns]
+        self.__categorical_X: pandas.DataFrame = self.__X[categorical_columns]
         continuous_columns = [
             x.name
             for _, x in self.__X.items()
-            if _determine_predictor_type(x) == "continuous"
+            if determine_predictor_type(x) == "continuous"
         ]
-        self.__continuous_X = self.__X[continuous_columns]
+        self.__continuous_X: pandas.DataFrame = self.__X[continuous_columns]
         cat_cat_combinations = itertools.combinations(
             self.categorical_X.columns,
             r=2,
@@ -96,6 +95,11 @@ class Dataset(object):
             ("categorical", "continuous"): [c for c in cat_cont_combinations],
             ("continuous", "continuous"): [c for c in cont_cont_combinations],
         }
+
+    @property
+    def title(self) -> str:
+        """"""
+        return self.__title
 
     @property
     def y(self) -> pandas.Series:
@@ -123,13 +127,13 @@ class Dataset(object):
         return self.__continuous_X
 
     @property
-    def X_combinations(self) -> Optional[pandas.DataFrame]:
+    def X_combinations(self) -> Dict[Tuple[str, str], List]:
         """"""
         return self.__X_combinations
 
     def get_combination_X(
         self,
-        combination: Tuple[str, str],
+        combination: Optional[Tuple[str, str]],
     ) -> pandas.DataFrame:
         """Get a pandas.DataFrame X based on a tuple of column names.
         You can access combinations from the property `X_combinations`.
@@ -141,33 +145,3 @@ class Dataset(object):
                 b: self.X[b],
             }
         )
-
-
-def main() -> int:
-    df = pandas.DataFrame(
-        {
-            "target": list(range(0, 100)),
-            "cat0": list("ab" * 50),
-            "cat1": list("cd" * 50),
-            "cont0": [random.uniform(0.00, 10.0) for _ in range(0, 100)],
-            "cont1": [random.uniform(0.00, 10.0) for _ in range(0, 100)],
-        }
-    )
-    dataset = Dataset(df, "target", ["cat0", "cat1", "cont0", "cont1"])
-    print("Response type:\n", dataset.y_type)
-    print("Response:\n", dataset.y)
-    print("Predictors:\n", dataset.X)
-    print("Categorical:\n", dataset.categorical_X)
-    print("Continuous:\n", dataset.continuous_X)
-    print("Combinations:\n", dataset.X_combinations)
-    print(
-        "Combinations:\n",
-        dataset.get_combination_X(
-            dataset.X_combinations["continuous", "continuous"][0]
-        ),
-    )
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())

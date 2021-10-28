@@ -3,13 +3,13 @@
 Adapted from the hw4_data.py script given in class.
 """
 import random
-import sys
 
 import numpy
 import pandas  # type: ignore
 import seaborn  # type: ignore
-from dataset import Dataset
 from sklearn import datasets  # type: ignore
+
+from . import Dataset
 
 SEABORN_DATA_SETS = ["mpg", "tips", "titanic"]
 """Names of supported seaborn data sets."""
@@ -22,6 +22,20 @@ ALL_DATA_SETS = SEABORN_DATA_SETS + SKLEARN_DATA_SETS
 def get_dataset(
     data_set_name: str = None,
 ) -> Dataset:
+    """Get a test dataset from either seaborn's or scikit's collection.
+
+    Args:
+        data_set_name (str, optional):
+            Name of dataset. Defaults to None.
+
+    Raises:
+        ValueError:
+            Raised if no dataset exists with a given name.
+
+    Returns:
+        Dataset:
+            A Dataset object based on a DataFrame or numpy dataset.
+    """
     if data_set_name is None:
         data_set_name = random.choice(ALL_DATA_SETS)
     else:
@@ -30,7 +44,7 @@ def get_dataset(
 
     if data_set_name in SEABORN_DATA_SETS:
         if data_set_name == "mpg":
-            data_set = seaborn.load_dataset(name="mpg").reset_index()
+            data_set = seaborn.load_dataset(name="mpg").dropna().reset_index()
             predictors = [
                 "cylinders",
                 "displacement",
@@ -41,7 +55,7 @@ def get_dataset(
             ]
             response = "mpg"
         elif data_set_name == "tips":
-            data_set = seaborn.load_dataset(name="tips").reset_index()
+            data_set = seaborn.load_dataset(name="tips").dropna().reset_index()
             predictors = [
                 "total_bill",
                 "sex",
@@ -52,7 +66,8 @@ def get_dataset(
             ]
             response = "tip"
         elif data_set_name == "titanic":
-            data_set = seaborn.load_dataset(name="titanic")
+            data_set = seaborn.load_dataset(name="titanic").dropna()
+            data_set = data_set.reset_index()
             predictors = [
                 "pclass",
                 "sex",
@@ -82,24 +97,3 @@ def get_dataset(
         predictor_columns=predictors,
         response_column=response,
     )
-
-
-def main() -> int:
-    dataset = get_dataset()
-    print("Response type:\n", dataset.y_type)
-    print("Response:\n", dataset.y)
-    print("Predictors:\n", dataset.X)
-    print("Categorical:\n", dataset.categorical_X)
-    print("Continuous:\n", dataset.continuous_X)
-    print("Combinations:\n", dataset.X_combinations)
-    print(
-        "Combinations:\n",
-        dataset.get_combination_X(
-            dataset.X_combinations["continuous", "continuous"][0]
-        ),
-    )
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
