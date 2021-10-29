@@ -148,7 +148,7 @@ class CategoricalCategoricalBFRanker:
             X = dataset.get_combination_X(combination)
             diff_df = create_2D_cat_diff_from_mean_table(X, y)
             avg_dmrsq_unwgt = diff_df["dmrsq"].mean()
-            avg_dmrsq_wgt = (diff_df["dmrsq"] * diff_df["bin_w"]).mean()
+            avg_dmrsq_wgt = (diff_df["dmrsq"] * diff_df["bin_w"]).sum()
             rank_df = rank_df.append(
                 other={
                     "x": combination[0],
@@ -177,7 +177,7 @@ class CategoricalContinuousBFRanker:
             X = dataset.get_combination_X(combination)
             diff_df = create_2D_cat_cont_diff_from_mean_table(X, y)
             avg_dmrsq_unwgt = diff_df["dmrsq"].mean()
-            avg_dmrsq_wgt = (diff_df["dmrsq"] * diff_df["bin_w"]).mean()
+            avg_dmrsq_wgt = (diff_df["dmrsq"] * diff_df["bin_w"]).sum()
             rank_df = rank_df.append(
                 other={
                     "x": combination[0],
@@ -206,7 +206,7 @@ class ContinuousContinuousBFRanker:
             X = dataset.get_combination_X(combination)
             diff_df = create_2D_cont_diff_from_mean_table(X, y)
             avg_dmrsq_unwgt = diff_df["dmrsq"].mean()
-            avg_dmrsq_wgt = (diff_df["dmrsq"] * diff_df["bin_w"]).mean()
+            avg_dmrsq_wgt = (diff_df["dmrsq"] * diff_df["bin_w"]).sum()
             rank_df = rank_df.append(
                 other={
                     "x": combination[0],

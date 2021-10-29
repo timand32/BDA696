@@ -35,7 +35,7 @@ def add_links(rank_df, plot_col, response_name):
         + response_name
         + '.html">{0}</a>'
     )
-    link = f'<a target="_blank" href="{0}">LINK</a>'
+    link = '<a target="_blank" href="{0}">LINK</a>'
     styler = rank_df.style.format(
         {
             "x": p_link,

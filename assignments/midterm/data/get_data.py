@@ -13,7 +13,7 @@ from . import Dataset
 
 SEABORN_DATA_SETS = ["mpg", "tips", "titanic"]
 """Names of supported seaborn data sets."""
-SKLEARN_DATA_SETS = ["diabetes", "breast_cancer"]
+SKLEARN_DATA_SETS = ["diabetes", "breast_cancer", "boston"]
 """Names of supported scikit-learn data sets."""
 ALL_DATA_SETS = SEABORN_DATA_SETS + SKLEARN_DATA_SETS
 """Names of all supported data sets."""
@@ -84,7 +84,9 @@ def get_dataset(
         elif data_set_name == "breast_cancer":
             data = datasets.load_breast_cancer()
             data_set = pandas.DataFrame(data.data, columns=data.feature_names)
-
+        elif data_set_name == "boston":
+            data = datasets.load_boston()
+            data_set = pandas.DataFrame(data.data, columns=data.feature_names)
         data_set["target"] = data.target
         predictors = data.feature_names
         if type(predictors) == numpy.ndarray:
