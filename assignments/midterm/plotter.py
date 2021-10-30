@@ -37,6 +37,25 @@ def record_plot(df, type_, x_name, y_name, path) -> pandas.DataFrame:
 def plot_correlation_matrix(x, y, z, x_name, y_name) -> go.Figure:
     z_name = z.name
     title = f"{z_name} between {x_name} & {y_name}"
+    annotations = []
+    # Stack Overflow Q#60860121 helped here.
+    for i, val in enumerate(z):
+        font_color = ""
+        if val > 0.0:
+            font_color = "black"
+        else:
+            font_color = "white"
+        annotations.append(
+            {
+                "x": x[i],
+                "y": y[i],
+                "font": {"color": font_color},
+                "xref": "x1",
+                "yref": "y1",
+                "text": f"{str(round(val, 2))}",
+                "showarrow": False,
+            }
+        )
     figure = go.Figure(
         data=go.Heatmap(
             x=x,
@@ -56,13 +75,31 @@ def plot_correlation_matrix(x, y, z, x_name, y_name) -> go.Figure:
     return figure
 
 
-def plot_dmr_matrix(x, y, z, title, x_name, y_name) -> go.Figure:
+def plot_dmr_matrix(x, y, z, populations, title, x_name, y_name) -> go.Figure:
+    annotations = []
+    # Stack Overflow Q#60860121 helped here.
+    for i, val in enumerate(z):
+        font_color = ""
+        if val > 0.0:
+            font_color = "black"
+        else:
+            font_color = "white"
+        annotations.append(
+            {
+                "x": x[i],
+                "y": y[i],
+                "font": {"color": font_color},
+                "xref": "x1",
+                "yref": "y1",
+                "text": f"{str(round(val, 2))} (pop: {populations[i]})",
+                "showarrow": False,
+            }
+        )
     figure = go.Figure(
         data=go.Heatmap(
             x=x,
             y=y,
             z=z,
-            text=z,
             # zmin= z.min(),
             zmid=0,
             # zmax = z.max(),
@@ -72,6 +109,7 @@ def plot_dmr_matrix(x, y, z, title, x_name, y_name) -> go.Figure:
             "title": title,
             "xaxis_title": x_name,
             "yaxis_title": y_name,
+            "annotations": annotations,
         },
     )
     return figure
@@ -336,12 +374,13 @@ class CategoricalCategoricalBFPlotter:
             diff_df = create_2D_cat_diff_from_mean_table(X=X, y=y)
             x = diff_df["i_category"]
             y = diff_df["j_category"]
-            z = diff_df["dmr"] * diff_df["bin_w"]
-            title = f"{c[0]} & {c[1]} (difference from mean response)"
+            z = pandas.Series(diff_df["dmr"] * diff_df["bin_w"])
+            title = f"{c[0]} & {c[1]} (weighted difference from mean response)"
             figure = plot_dmr_matrix(
                 x,
                 y,
                 z,
+                diff_df["bin_pop"],
                 title,
                 c[0],
                 c[1],
@@ -376,12 +415,13 @@ class CategoricalContinuousBFPlotter:
             diff_df = create_2D_cat_cont_diff_from_mean_table(X=X, y=y)
             x = diff_df["i_category"]
             y = [str(j) for j in diff_df["j_interval"].to_list()]
-            z = diff_df["dmr"] * diff_df["bin_w"]
-            title = f"{c[0]} & {c[1]} (difference from mean response)"
+            z = pandas.Series(diff_df["dmr"] * diff_df["bin_w"])
+            title = f"{c[0]} & {c[1]} (weighted difference from mean response)"
             figure = plot_dmr_matrix(
                 x,
                 y,
                 z,
+                diff_df["bin_pop"],
                 title,
                 c[0],
                 c[1],
@@ -416,12 +456,13 @@ class ContinuousContinuousBFPlotter:
             diff_df = create_2D_cont_diff_from_mean_table(X=X, y=y)
             x = [str(i) for i in diff_df["i_interval"].to_list()]
             y = [str(i) for i in diff_df["j_interval"].to_list()]
-            z = diff_df["dmr"] * diff_df["bin_w"]
-            title = f"{c[0]} & {c[1]} (difference from mean response)"
+            z = pandas.Series(diff_df["dmr"] * diff_df["bin_w"])
+            title = f"{c[0]} & {c[1]} (weighted difference from mean response)"
             figure = plot_dmr_matrix(
                 x,
                 y,
                 z,
+                diff_df["bin_pop"],
                 title,
                 c[0],
                 c[1],

@@ -4,7 +4,7 @@ import webbrowser
 import data
 from analyzer import Analyzer
 
-TITLE = "boston"
+TITLE = "diabetes"
 """Determines dataset that gets reported.
 
 To change target dataset, pass its title as a string.
