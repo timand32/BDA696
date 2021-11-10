@@ -1,9 +1,9 @@
 black
-cufflinks
 detect-secrets
 flake8
 isort[requirements]
 jupyterlab
+mypy
 pip-tools
 pre-commit
 nose
