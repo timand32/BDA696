@@ -1,4 +1,5 @@
 numpy
+mariadb
 pandas
 plotly
 pyspark
