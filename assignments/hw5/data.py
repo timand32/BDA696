@@ -26,9 +26,13 @@ def load_y() -> pd.Series:
     df = pd.read_sql_query(query, SQL_ENGINE)
     df = df.replace("H", 1)
     df = df.replace("A", 0)
+    df = df.replace("", float("NaN"))
+    df = df.dropna()
     df = df.set_index("game_id")
     df = df.sort_index()
-    return df["home_team_wins"]
+    df = df.astype("int")
+    series = df["home_team_wins"]
+    return series
 
 
 def drop_columns(df: pd.DataFrame) -> pd.DataFrame:
