@@ -154,7 +154,9 @@ def main() -> int:
         "ip_ratio",
         "hr9_difference",
     ]
+    print("Model from 100-day stats:")
     models.build_models(X0[features], y)
+    print("Model from prior career stats:")
     models.build_models(X1[features], y)
     print("A linearSVC appeard to perform slightly better than an RFC.")
     print("100-day rolling stats and career stats appear to perform the same.")
