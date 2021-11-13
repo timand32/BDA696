@@ -60,6 +60,42 @@ def main() -> int:
     X1_metrics = metrics.calculate_predictor_metrics(X1, X1_bins, y)
     print(f"{X0_metrics}\n{X1_metrics}\n")
 
+    # Calculate correlations
+    X0_corrs = metrics.calculate_correlations(X0)
+    X1_corrs = metrics.calculate_correlations(X1)
+    print(f"{X0_corrs}\n{X1_corrs}\n")
+
+    # Plot correlations
+    figure = plot.plot_correlations(X0_corrs)
+    plot.save_figure(
+        figure,
+        "./output/hw5/100-day/plots/corr_plot.html",
+    )
+    figure = plot.plot_correlations(X1_corrs)
+    plot.save_figure(
+        figure,
+        "./output/hw5/career/plots/corr_plot.html",
+    )
+
+    # Calculate brute-force
+    X0_bf_bins = bins.bin_combinations(X0, y, n=5)
+    X1_bf_bins = bins.bin_combinations(X1, y, n=5)
+    print(f"{X0_bf_bins}\n{X1_bf_bins}\n")
+
+    # Plot bfs
+    for key, b in X0_bf_bins.items():
+        figure = plot.plot_bruteforce(b, key[0], key[1])
+        plot.save_figure(
+            figure,
+            f"./output/hw5/100-day/plots/{key[0]}X{key[1]}_bf_plot.html",
+        )
+    for key, b in X1_bf_bins.items():
+        figure = plot.plot_bruteforce(b, key[0], key[1])
+        plot.save_figure(
+            figure,
+            f"./output/hw5/career/plots/{key[0]}X{key[1]}_bf_plot.html",
+        )
+
     # Open report's folder in browser
     webbrowser.open("output/hw5/", new=2)
     return 0

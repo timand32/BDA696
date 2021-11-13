@@ -1,9 +1,11 @@
 """
 """
+from itertools import product
 from typing import Dict, Tuple
 
 import pandas as pd
 import statsmodels.api
+from scipy.stats import pearsonr
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 
@@ -80,3 +82,28 @@ def calculate_metric_scores(
     )
     score_series = scaled.mean(axis=1)
     return score_series
+
+
+def calculate_correlations(
+    X: pd.DataFrame,
+) -> pd.DataFrame:
+    corrs = pd.DataFrame()
+    X = X.dropna()
+    for c in product(X.columns, X.columns):
+        x0 = X[c[0]]
+        x1 = X[c[1]]
+        pearson_coef, _ = pearsonr(x=x0, y=x1)
+        corrs = corrs.append(
+            other={
+                "x0": c[0],
+                "x1": c[1],
+                "pearson_coef": pearson_coef,
+                "abs_coef": abs(pearson_coef),
+            },
+            ignore_index=True,
+        )
+    corrs = corrs.sort_values(
+        by="abs_coef",
+        ascending=False,
+    )
+    return corrs
