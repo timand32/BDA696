@@ -107,3 +107,24 @@ def calculate_correlations(
         ascending=False,
     )
     return corrs
+
+
+def rank_bf(
+    X_bf: dict,
+) -> pd.DataFrame:
+    ranks = pd.DataFrame()
+    for key, df in X_bf.items():
+        mean_squared_diff_sum = df["mean_squared_diff"].sum()
+        mean_squared_diff_sum_w = df["mean_squared_diff_weighted"].sum()
+        entry = {
+            "x0": key[0],
+            "x1": key[1],
+            "mean_squared_diff_sum": mean_squared_diff_sum,
+            "mean_squared_diff_sum_weighted": mean_squared_diff_sum_w,
+        }
+        ranks = ranks.append(entry, ignore_index=True)
+    ranks = ranks.sort_values(
+        "mean_squared_diff_sum_weighted",
+        ascending=False,
+    )
+    return ranks

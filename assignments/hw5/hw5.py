@@ -6,7 +6,9 @@ import webbrowser
 import bins
 import data
 import metrics
+import models
 import plot
+import report
 
 
 def main() -> int:
@@ -60,6 +62,22 @@ def main() -> int:
     X1_metrics = metrics.calculate_predictor_metrics(X1, X1_bins, y)
     print(f"{X0_metrics}\n{X1_metrics}\n")
 
+    # Report predictors
+    report.report_predictors(
+        X0_metrics,
+        "predictor_report.html",
+        "./output/hw5/100-day/",
+    )
+    report.report_predictors(
+        X1_metrics,
+        "predictor_report.html",
+        "./output/hw5/career/",
+    )
+
+    # Open report's folder in browser
+    webbrowser.open("output/hw5/100-day/predictor_report.html", new=2)
+    webbrowser.open("output/hw5/career/predictor_report.html", new=2)
+
     # Calculate correlations
     X0_corrs = metrics.calculate_correlations(X0)
     X1_corrs = metrics.calculate_correlations(X1)
@@ -77,10 +95,24 @@ def main() -> int:
         "./output/hw5/career/plots/corr_plot.html",
     )
 
+    # Report correlations
+    report.report_correlations(
+        X0_corrs,
+        "corr_report.html",
+        "./output/hw5/100-day/",
+    )
+    report.report_correlations(
+        X1_corrs,
+        "corr_report.html",
+        "./output/hw5/career/",
+    )
+
+    webbrowser.open("output/hw5/100-day/corr_report.html", new=2)
+    webbrowser.open("output/hw5/career/corr_report.html", new=2)
+
     # Calculate brute-force
     X0_bf_bins = bins.bin_combinations(X0, y, n=5)
     X1_bf_bins = bins.bin_combinations(X1, y, n=5)
-    print(f"{X0_bf_bins}\n{X1_bf_bins}\n")
 
     # Plot bfs
     for key, b in X0_bf_bins.items():
@@ -96,8 +128,37 @@ def main() -> int:
             f"./output/hw5/career/plots/{key[0]}X{key[1]}_bf_plot.html",
         )
 
-    # Open report's folder in browser
-    webbrowser.open("output/hw5/", new=2)
+    # Rank bfs
+    X0_bf_ranks = metrics.rank_bf(X0_bf_bins)
+    X1_bf_ranks = metrics.rank_bf(X1_bf_bins)
+
+    # Report bfs
+    report.report_bruteforces(
+        X0_bf_ranks,
+        "bf_report.html",
+        "./output/hw5/100-day/",
+    )
+    report.report_bruteforces(
+        X1_bf_ranks,
+        "bf_report.html",
+        "./output/hw5/career/",
+    )
+
+    webbrowser.open("output/hw5/100-day/bf_report.html", new=2)
+    webbrowser.open("output/hw5/career/bf_report.html", new=2)
+
+    # Build models
+    features = [
+        "s9_difference",
+        "h9_difference",
+        "ip_ratio",
+        "hr9_difference",
+    ]
+    models.build_models(X0[features], y)
+    models.build_models(X1[features], y)
+    print("A linearSVC appeard to perform slightly better than an RFC.")
+    print("100-day rolling stats and career stats appear to perform the same.")
+
     return 0
 
 
