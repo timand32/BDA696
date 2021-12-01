@@ -9,24 +9,19 @@ import data
 import pandas
 import reports
 
-TITLE: str = "mpg"
+TITLE: str = "titanic"
 """Title for report:
 Effects what folder report gets output to.
 """
-DF: pandas.DataFrame = data.mpg
+DF: pandas.DataFrame = data.titanic
 """Dataframe for report.
 """
 PREDICTORS: list[str] = [
-    "cylinders",
-    "displacement",
-    "horsepower",
-    "weight",
-    "acceleration",
-    "origin",
+    "age",
 ]
 """Predictor list for report.
 """
-RESPONSE: str = "mpg"
+RESPONSE: str = "survived"
 """Response for report.
 """
 
