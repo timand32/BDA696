@@ -7,7 +7,7 @@ import sqlalchemy
 """
 DB_USER = "root"
 DB_PASS = "password"  # pragma: allowlist secret
-DB_HOST = "localhost"
+DB_HOST = "mariadb:3306"
 DB_DATABASE = "baseball"
 DB_URL = "mariadb+mariadbconnector://"
 DB_URL += f"{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_DATABASE}"

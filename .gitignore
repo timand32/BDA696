@@ -160,3 +160,6 @@ static
 .log
 
 output/*
+docker-output/*
+
+baseball.sql
