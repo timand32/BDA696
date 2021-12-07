@@ -42,3 +42,13 @@ I tried the following starting pitcher stats (100-day stats and prior career sta
 The following was used for the rest:
 
 home starting pitcher's stat - away starting pitcher's stat
+
+## Assignment #6
+
+Everything should run after executing "docker-compose up" in the root directory, assuming baseball.sql is also in the root. Additionally, everything should get saved in a new "docker-output" folder (the only catch is that the script can't automatically open the browser now).
+
+Note that you'll need to manually shut down the mariadb container, as I am unsure how to make that shut down when the other container finishes running (it might be somewhere in the lecture notes...).
+
+I've included [this](https://github.com/vishnubob/wait-for-it) script from [this] Stack Overflow issue. I was running into issues when my main script tried running before the database service started.
+
+The Python script ran at the end is my HW5 submission (I recall the professor saying we could do this instead of the task mentioned on the lecture slides).

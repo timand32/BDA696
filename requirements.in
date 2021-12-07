@@ -1,10 +1,8 @@
-numpy
+jinja2
 mariadb
+numpy
 pandas
 plotly
-pyspark
-pyspark-stubs
 scikit-learn
-seaborn
 sqlalchemy
 statsmodels
