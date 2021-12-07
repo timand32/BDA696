@@ -2,7 +2,7 @@
 
 ## Assignment #1
 
-Main executable file located at ./apps/iris/iris.py.
+Main executable file located at ./assignments/hw1/iris.py.
 
 ## Assignment #2
 
