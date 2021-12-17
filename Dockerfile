@@ -14,4 +14,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
+COPY ./scripts /scripts
+COPY ./final-project .
+
 RUN pip3 install --compile --no-cache-dir -r requirements.txt

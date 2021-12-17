@@ -110,10 +110,13 @@ def calculate_correlations(
 
 
 def rank_bf(
-    X_bf: dict,
+    X_bf: dict, X_corr: pd.DataFrame, corr_threshold: float = 0.2
 ) -> pd.DataFrame:
     ranks = pd.DataFrame()
     for key, df in X_bf.items():
+        index = (X_corr["x0"] == key[0]) & (X_corr["x1"] == key[1])
+        if X_corr[index]["abs_coef"] < corr_threshold:
+            continue
         mean_squared_diff_sum = df["mean_squared_diff"].sum()
         mean_squared_diff_sum_w = df["mean_squared_diff_weighted"].sum()
         entry = {

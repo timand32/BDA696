@@ -35,22 +35,34 @@ def load_y() -> pd.Series:
     return series
 
 
-def drop_columns(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.drop(
-        labels=[
-            "local_date",
-            "home_pitcher",
-            "away_pitcher",
-        ],
-        axis=1,
-    )
-    return df
+AVERAGE_WINS = load_y().mean()
 
 
-def load_200() -> pd.DataFrame:
-    query = "CALL pythagorean(1000)"
-    df = pd.read_sql_query(query, SQL_ENGINE)
+def load_pythagorean() -> pd.DataFrame:
+    df = pd.DataFrame()
+
+    query = "SELECT * FROM career_pythagorean;"
+    other = pd.read_sql_query(query, SQL_ENGINE)
+    mapper = {c: f"{c}_career" for c in other.columns if c != "game_id"}
+    other = other.rename(mapper=mapper, axis=1)
+    df = df.append(other)
     df = df.set_index("game_id")
+
+    query = "SELECT * FROM season_pythagorean;"
+    other = pd.read_sql_query(query, SQL_ENGINE)
+    mapper = {c: f"{c}_season" for c in other.columns if c != "game_id"}
+    other = other.rename(mapper=mapper, axis=1)
+    other = other.set_index("game_id")
+    df = df.join(other)
+
+    for i in [1]:  # [1, 8, 13, 55, 144, ]:
+        query = f"CALL rolling_pythagorean({i});"
+        other = pd.read_sql_query(query, SQL_ENGINE)
+        mapper = {c: f"{c}_{i}" for c in other.columns if c != "game_id"}
+        other = other.rename(mapper=mapper, axis=1)
+        other = other.set_index("game_id")
+        df = df.join(other=other)
+
     return df
 
 
