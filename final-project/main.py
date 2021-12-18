@@ -1,7 +1,10 @@
 import sys
 
+import pythagorean_report
+
 
 def main() -> int:
+    pythagorean_report.report_pythagoreans()
     return 0
 
 
