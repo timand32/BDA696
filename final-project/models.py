@@ -2,9 +2,9 @@
 """
 # import statistics
 
+import database
 import pandas as pd
-
-# import plotly.express as px
+import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.ensemble import (
     AdaBoostClassifier,
@@ -21,7 +21,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
 
-TSS = TimeSeriesSplit(n_splits=2, max_train_size=None)
+TSS = TimeSeriesSplit(n_splits=10, max_train_size=None)
 
 PIPELINES = [
     Pipeline(
@@ -68,7 +68,8 @@ def try_models(
     y: pd.Series,
     feature_sets,
     path,
-) -> pd.DataFrame():
+) -> None:
+    result_df = pd.DataFrame()
     for pass_, feature_set in enumerate(feature_sets):
         X = X_
         df = X[feature_set]
@@ -106,49 +107,63 @@ def try_models(
                     confusion_matrix(y_test, y_pred),
                 ]
 
-    result_df = pd.DataFrame()
+        for model, model_dict in results.items():
+            for run, score in enumerate(model_dict["scores"]):
+                row = {
+                    "model": model,
+                    "feature_set": ", ".join(feature_set),
+                    "score": score,
+                }
+                result_df = result_df.append(row, ignore_index=True)
+                # Plot confusion matrix for each run
+                # https://stackoverflow.com/questions/60860121
+                labels = [0, 1]
+                cm = model_dict["confusion"][run]
+                data = go.Heatmap(z=cm, y=labels, x=labels, colorscale="BrBg")
+                annotations = []
+                for i, row in enumerate(cm):
+                    for j, value in enumerate(row):
+                        annotations.append(
+                            {
+                                "x": labels[i],
+                                "y": labels[j],
+                                "font": {"color": "black"},
+                                "text": str(value),
+                                "xref": "x1",
+                                "yref": "y1",
+                                "showarrow": False,
+                            }
+                        )
+                layout = {
+                    "title": f"CF for {model}, run {i}",
+                    "xaxis": {"title": "Predicted value"},
+                    "yaxis": {"title": "Real value"},
+                    "annotations": annotations,
+                }
+                fig = go.Figure(
+                    data=data,
+                    layout=layout,
+                )
+                fig.write_html(f"{path}/plots/{pass_}_{model}_cm_{run}.html")
 
-    for model, model_dict in results.items():
-        for run, score in enumerate(model_dict["scores"]):
-            row = {
-                "model": model,
-                "run": run,
-                "score": score,
-            }
-            result_df = result_df.append(row, ignore_index=True)
-            # Plot confusion matrix for each run
-            # https://stackoverflow.com/questions/60860121
-            labels = [0, 1]
-            cm = model_dict["confusion"][run]
-            data = go.Heatmap(z=cm, y=labels, x=labels, colorscale="BrBg")
-            annotations = []
-            for i, row in enumerate(cm):
-                for j, value in enumerate(row):
-                    annotations.append(
-                        {
-                            "x": labels[i],
-                            "y": labels[j],
-                            "font": {"color": "black"},
-                            "text": str(value),
-                            "xref": "x1",
-                            "yref": "y1",
-                            "showarrow": False,
-                        }
-                    )
-            layout = {
-                "title": f"CF for {model}, run {i}",
-                "xaxis": {"title": "Predicted value"},
-                "yaxis": {"title": "Real value"},
-                "annotations": annotations,
-            }
-            fig = go.Figure(
-                data=data,
-                layout=layout,
-            )
-            fig.update_layout()
-            fig.to_html(f"{path}_{pass_}_{model}_cm_{run}.html")
-
-    return result_df
+    fig = px.box(
+        result_df,
+        x="feature_set",
+        y="score",
+        color="model",
+    )
+    fig.add_shape(
+        type="line",
+        x0=0,
+        y0=database.AVERAGE_WINS,
+        x1=1,
+        y1=database.AVERAGE_WINS,
+        line={"color": "black"},
+        xref="paper",
+        yref="y",
+    )
+    fig.write_html(f"{path}/models.html")
+    return
 
 
 if __name__ == "__main__":

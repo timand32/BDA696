@@ -76,6 +76,11 @@ def add_bf_links(bins):
     return styler
 
 
+def add_result_links(results):
+    styler = results.style
+    return styler
+
+
 def report_predictors(X_metrics, title, path):
     styler = add_predictor_links(X_metrics)
     save_table(styler, title, path)
@@ -88,4 +93,9 @@ def report_correlations(corrs, title, path):
 
 def report_bruteforces(corrs, title, path):
     styler = add_bf_links(corrs)
+    save_table(styler, title, path)
+
+
+def report_model_results(results, title, path):
+    styler = add_result_links(results)
     save_table(styler, title, path)

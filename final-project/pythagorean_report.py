@@ -92,8 +92,8 @@ def report_pythagoreans() -> None:
 
     webbrowser.open("output/reports/pythagorean/bf_report.html", new=2)
 
-    features0 = ["pyth2_diff_roll160"]
-    features1 = ["home_pyth2_roll160", "away_pyth2_roll160"]
+    features0 = ["pyth1_diff_roll160"]
+    features1 = ["home_pyth2_roll160", "away_pyth2_roll320"]
     models.try_models(
         X,
         y,
@@ -104,7 +104,7 @@ def report_pythagoreans() -> None:
         "./output/reports/pythagorean/",
     )
 
-    webbrowser.open("./output/reports/pythagorean/models.html", new=2)
+    webbrowser.open("output/reports/pythagorean/models.html", new=2)
 
 
 def main() -> int:
