@@ -64,12 +64,13 @@ PIPELINES = [
 
 
 def try_models(
-    X: pd.DataFrame,
+    X_: pd.DataFrame,
     y: pd.Series,
     feature_sets,
     path,
 ) -> pd.DataFrame():
-    for feature_set in feature_sets:
+    for pass_, feature_set in enumerate(feature_sets):
+        X = X_
         df = X[feature_set]
         df[y.name] = y
         df = df.dropna()
@@ -145,7 +146,7 @@ def try_models(
                 layout=layout,
             )
             fig.update_layout()
-            fig.show()
+            fig.to_html(f"{path}_{pass_}_{model}_cm_{run}.html")
 
     return result_df
 
