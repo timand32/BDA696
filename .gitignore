@@ -163,3 +163,5 @@ output/*
 docker-output/*
 
 baseball.sql
+
+notebooks/*

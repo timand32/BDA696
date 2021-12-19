@@ -11,7 +11,11 @@ RUN apt-get update \
         python3-pip \
         python3-dev \
         mariadb-client \
+        pv \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
+COPY ./scripts /scripts
+COPY ./final-project .
+
 RUN pip3 install --compile --no-cache-dir -r requirements.txt
