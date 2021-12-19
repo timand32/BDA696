@@ -1,6 +1,5 @@
 """
 """
-from itertools import combinations
 from typing import Dict
 
 import pandas as pd
@@ -43,13 +42,21 @@ if __name__ == "__main__":
 def bin_combinations(
     X: pd.DataFrame,
     y: pd.Series,
-    n: int = 10,
+    X_corrs: pd.DataFrame,
+    threshold: float = 0.05,
+    n: int = 5,
 ) -> Dict[str, pd.DataFrame]:
     bf_bins = dict()
     X = X.dropna()
-    for c in combinations(X.columns, 2):
+
+    # Only keep x under threshold
+    for index, row in X_corrs.iterrows():
+        if row["abs_coef"] > threshold:
+            X_corrs = X_corrs.drop(index)
+
+    for _, row in X_corrs.iterrows():
         bins = pd.DataFrame()
-        df = X[[c[0], c[1]]]
+        df = X[[row["x0"], row["x1"]]]
         df[y.name] = y
         df["x0_interval"] = pd.cut(x=df.iloc[:, 0], bins=n)
         df["x1_interval"] = pd.cut(x=df.iloc[:, 1], bins=n)
@@ -83,5 +90,5 @@ def bin_combinations(
                     entry,
                     ignore_index=True,
                 )
-        bf_bins[(c[0], c[1])] = bins
+        bf_bins[(row["x0"], row["x1"])] = bins
     return bf_bins
