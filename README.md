@@ -1,22 +1,33 @@
-# BDA696 Assignments
+# BDA Final Project
 
-## Assignment #1
+There are only two dependencies for running the final project:
+
+1. you have the baseball.sql database saved to the directory ./scripts/sql/.
+2. you have Docker installed on your machine.
+
+Running `docker-compose up` in the root directory should be enough to run the project.
+
+## BDA696 Assignments
+
+The repository also still contains assingments done for this course.
+
+### Assignment #1
 
 Main executable file located at ./assignments/hw1/iris.py.
 
-## Assignment #2
+### Assignment #2
 
 Script located at scripts/batting_average.sql.
 
-## Assignment #3
+### Assignment #3
 
 Main executable file located at ./assignments/hw3/app.py.
 
-## Assignment #4
+### Assignment #4
 
 Main executable file located at ./assignments/hw4/app.py.
 
-## Midterm
+### Midterm
 
 Main executable file located at ./assignments/midterm/midterm.py.
 
@@ -24,7 +35,7 @@ Report on different datasets by changing `TITLE` at the top of midterm.py.
 
 Add new datasets in ./assignments/midterm/data/get_data.py.
 
-## Assignment #5
+### Assignment #5
 
 Main executable file located at ./assignments/hw5/hw5.py.
 
@@ -43,7 +54,7 @@ The following was used for the rest:
 
 home starting pitcher's stat - away starting pitcher's stat
 
-## Assignment #6
+### Assignment #6
 
 Everything should run after executing "docker-compose up" in the root directory, assuming baseball.sql is also in the root. Additionally, everything should get saved in a new "docker-output" folder (the only catch is that the script can't automatically open the browser now).
 
