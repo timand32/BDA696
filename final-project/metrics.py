@@ -42,6 +42,8 @@ def calculate_logarithmic_regression(
     df = x.to_frame().join(y)
     df = df.dropna()
     x = df[x.name]
+    if (x == 0).all():
+        return (None, None)
     y = df[y.name]
     p = statsmodels.api.add_constant(x)
     lrm = statsmodels.api.Logit(y, p)

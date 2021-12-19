@@ -27,13 +27,18 @@ PIPELINES = [
     Pipeline(
         [
             ("scaler", StandardScaler()),
-            ("LogisticRegression", LogisticRegression()),
+            (
+                "LogisticRegression",
+                LogisticRegression(
+                    multi_class="multinomial",
+                ),
+            ),
         ],
     ),
     Pipeline(
         [
             ("scaler", StandardScaler()),
-            ("LinearSVC", LinearSVC(max_iter=6400)),
+            ("LinearSVC", LinearSVC(max_iter=100000)),
         ],
     ),
     Pipeline(
@@ -68,6 +73,7 @@ def try_models(
     y: pd.Series,
     feature_sets,
     path,
+    title,
 ) -> None:
     result_df = pd.DataFrame()
     for pass_, feature_set in enumerate(feature_sets):
@@ -151,6 +157,7 @@ def try_models(
         x="feature_set",
         y="score",
         color="model",
+        title=f"Model scores from {title} features",
     )
     fig.add_shape(
         type="line",
