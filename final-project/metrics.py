@@ -42,8 +42,6 @@ def calculate_logarithmic_regression(
     df = x.to_frame().join(y)
     df = df.dropna()
     x = df[x.name]
-    if (x == 0).all():
-        return (None, None)
     y = df[y.name]
     p = statsmodels.api.add_constant(x)
     lrm = statsmodels.api.Logit(y, p)
@@ -112,7 +110,7 @@ def calculate_correlations(
 
 
 def rank_bf(
-    X_bf: dict, X_corr: pd.DataFrame, corr_threshold: float = 0.2
+    X_bf: dict,
 ) -> pd.DataFrame:
     ranks = pd.DataFrame()
     for key, df in X_bf.items():
